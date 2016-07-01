@@ -10,6 +10,7 @@ export const GET_ALL_TODO = 'GET_ALL_TODO';
 export const ADD_ACTOR = 'ADD_ACTOR';
 export const REMOVE_ACTOR = 'REMOVE_ACTOR';
 export const GET_ALL_ACTOR = 'GET_ALL_ACTOR';
+export const MOVE_ACTOR = 'MOVE_ACTOR';
 /*
  * action creators
  */
@@ -18,6 +19,14 @@ export function addActor(data) {
   return {
     type: ADD_ACTOR,
     data,
+  };
+}
+export function moveActor(data) {
+  return {
+    type: MOVE_ACTOR,
+    _id,
+    distanceX,
+    distanceY,
   };
 }
 export function removeActor(_id) {

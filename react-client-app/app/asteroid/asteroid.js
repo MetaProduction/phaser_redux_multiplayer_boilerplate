@@ -22,6 +22,9 @@ asteroid.ddp.on('removed', (doc) => {
 	const docObj = Object.assign({}, doc.fields, {_id: doc.id});
 	store.dispatch(removeActor(docObj));
 });
+asteroid.ddp.on('changed', (updatedDoc) => {
+  store.dispatch(editTodo(updatedDoc.id, updatedDoc.fields));
+})
 /**
 asteroid.ddp.on('added', (doc) => {
   // we need proper document object format here
@@ -33,6 +36,4 @@ asteroid.ddp.on('removed', (removedDoc) => {
   store.dispatch(removeTodo(removedDoc.id));
 });
 
-asteroid.ddp.on('changed', (updatedDoc) => {
-  store.dispatch(editTodo(updatedDoc.id, updatedDoc.fields.finished));
-});**/
+;**/

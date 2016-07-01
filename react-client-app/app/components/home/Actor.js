@@ -9,7 +9,7 @@ const Actor = (props) => {
   const handleRemove = () => {
     dispatchCallRemoveActor(id);
   };
- 
+ //TODO NEXT: add buttons to move
   return (
     <div>
       name:{name} health: {health} x: {posX} y: {posY}

@@ -1,6 +1,8 @@
 import { asteroid } from '../asteroid/asteroid';
 import { addTodo, getAllTodo, removeTodo, editTodo, addActor, removeActor, getAllActor } from './actions';
 
+//possibly better in the future to have a "velocity" on the server, and send "ismoving" / "stopmoving" / "update direction" messages
+
 export function callAddActor(name) {
   return dispatch => asteroid.call('addActor', name)
       .then(result => dispatch(addActor({ _id: result, name })));
@@ -14,6 +16,11 @@ export function callGetAllActor() {
 export function callRemoveActor(_id) {
   return dispatch => asteroid.call('removeActor', _id)
       .then(() => dispatch(removeActor(_id)));
+}
+
+export function callMoveActor(_id) {
+  return dispatch => asteroid.call('MoveActor', _id, distanceX, distanceY)
+      .then(() => dispatch(MoveActor(_id, distanceX, distanceY)));
 }
 
 export function callAddTodo(message) {

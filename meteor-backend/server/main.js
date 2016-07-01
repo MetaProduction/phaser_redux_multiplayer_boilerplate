@@ -67,7 +67,7 @@ Meteor.methods({
      removeActor(id) {
         return Actor.remove({_id: id});
     },
-    movePlayer(id, distanceX, distanceY) {
+    moveActor(id, distanceX, distanceY) {
         //todo: check that player is owned by current user
         //todo: ensure that player is not moving faster than their max move speed
         //possibly take a direction and calculate the speed entirely serverside
