@@ -4,10 +4,10 @@ import { connect } from 'react-redux';
 import style from './styles.styl';
 import Actor from './Actor';
 
-import { callAddActor, callGetAllActor } from '../../redux/async-actions';
+import { callAddActor, callGetAllActor, callMoveActor} from '../../redux/async-actions';
 
 const Home = (props) => {
-  const { actors, dispatchCallAddActor, dispatchCallUpdateActors } = props;
+  const { actors, dispatchCallAddActor, dispatchCallUpdateActors, dispatchCallMoveActor } = props;
   const handleAddActor = (e) => {
     if (e.key === 'Enter') {
       const elem = e.target;
@@ -30,7 +30,7 @@ const Home = (props) => {
         />
       </div>
       <div>
-        {actors.map((t, i) => <Actor id={t._id} name={t.name} health={t.health} posX={t.posX} posY={t.posY} key={i} />)}
+        {actors.map((t, i) => <Actor dispatchCallUpdateActors={dispatchCallUpdateActors} id={t._id} name={t.name} health={t.health} speed={t.speed} posX={t.posX} posY={t.posY} key={i} />)}
       </div>
     </div>
   );
@@ -40,12 +40,14 @@ Home.propTypes = {
   actors: React.PropTypes.array.isRequired,
   dispatchCallAddActor: React.PropTypes.func.isRequired,
   dispatchCallUpdateActors: React.PropTypes.func.isRequired,
+  dispatchCallMoveActor: React.PropTypes.func
 };
 
 const mapStateToProps = (state) => ({ actors: state.actors });
 const mapDispatchToProps = (dispatch) => ({
   dispatchCallAddActor: data => dispatch(callAddActor(data)),
   dispatchCallUpdateActors: () => dispatch(callGetAllActor()),
+  dispatchCallMoveActor: (_id, distanceX, distanceY) => dispatch(callMoveActor(_id, distanceX, distanceY)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(cssModules(Home, style));

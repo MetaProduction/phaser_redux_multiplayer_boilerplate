@@ -31,7 +31,7 @@ asteroid.ddp.on('changed', ({collection, id, fields}) => {
 	console.log(collection);
 	console.log(id);
 	console.log(fields);
-  store.dispatch(editActor(updatedDoc.id, updatedDoc.fields));
+  store.dispatch(editActor(id, fields));
 })
 /**
 asteroid.ddp.on('added', (doc) => {

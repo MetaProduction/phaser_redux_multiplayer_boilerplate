@@ -8,6 +8,7 @@ export const EDIT_TODO = 'EDIT_TODO';
 export const GET_ALL_TODO = 'GET_ALL_TODO';
 
 export const ADD_ACTOR = 'ADD_ACTOR';
+export const EDIT_ACTOR = 'EDIT_ACTOR';
 export const REMOVE_ACTOR = 'REMOVE_ACTOR';
 export const GET_ALL_ACTOR = 'GET_ALL_ACTOR';
 export const MOVE_ACTOR = 'MOVE_ACTOR';

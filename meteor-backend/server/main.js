@@ -14,6 +14,7 @@ Actor.schema = new SimpleSchema({
     posX: {type: Number, defaultValue: 0},
     posY: {type: Number, defaultValue: 0},
     health:{type: Number, defaultValue: 100},
+    speed:{type: Number, defaultValue: 10},
     skills: {type: [Object], defaultValue: []},
     inventory: {type: [Object], defaultValue: []},
 });
@@ -62,16 +63,18 @@ Meteor.methods({
         return Actor.find().fetch();
     },
     addActor(name){
-        return Actor.insert({name: name, health: 100, type: "testActor", posX: 0, posY: 0, })
+        return Actor.insert({name: name, health: 100, speed:10, type: "testActor", posX: 0, posY: 0, })
     },
      removeActor(id) {
         return Actor.remove({_id: id});
     },
     moveActor(id, distanceX, distanceY) {
+        console.log('moving');
+        console.log(id);
         //todo: check that player is owned by current user
         //todo: ensure that player is not moving faster than their max move speed
         //possibly take a direction and calculate the speed entirely serverside
-        return Player.update({_id: id}, {inc: {posX: distanceX, posY: distanceY}});
+        return Actor.update({_id: id}, {$inc: {posX: distanceX, posY: distanceY}});
     }
 });
 

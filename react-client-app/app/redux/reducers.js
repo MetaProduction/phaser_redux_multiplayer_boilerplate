@@ -1,4 +1,4 @@
-import { ADD_TODO, REMOVE_TODO, EDIT_TODO, GET_ALL_TODO, ADD_ACTOR, REMOVE_ACTOR, MOVE_ACTOR, GET_ALL_ACTOR } from './actions';
+import { ADD_TODO, REMOVE_TODO, EDIT_TODO, EDIT_ACTOR, GET_ALL_TODO, ADD_ACTOR, REMOVE_ACTOR, MOVE_ACTOR, GET_ALL_ACTOR } from './actions';
 import { combineReducers } from 'redux';
 
 // actions helpers
@@ -15,11 +15,13 @@ const remove = (state, action) => {
 };
 
 const edit = (state, action) => {
+  console.log("edit");
+  console.log(action);
   const elemToEditArray = state.slice().filter(item => item._id === action._id);
   if (Array.isArray(elemToEditArray) && elemToEditArray.length) {
     const elemToEditIndex = state.indexOf(elemToEditArray[0]);
     const newState = state.slice();
-    newState[elemToEditIndex].finished = action.finished;
+    newState[elemToEditIndex] = Object.assign({}, newState[elemToEditIndex], action.data);
     return newState;
   }
   return state;
@@ -34,7 +36,9 @@ const add = (state, action) => {
   return state;
 };
 
-const move =(state, action) => {
+const move = (state, action) => {
+  console.log("MOVING");
+  console.log(action);
   const elemToEditArray = state.slice().filter(item => item._id === action._id);
   if (Array.isArray(elemToEditArray) && elemToEditArray.length) {
     const elemToEditIndex = state.indexOf(elemToEditArray[0]);
@@ -71,6 +75,8 @@ function actors(state = [], action) {
       return action.data;
     case MOVE_ACTOR:
       return move(state, action);
+    case EDIT_ACTOR:
+      return edit(state, action);
     default:
       return state;
   }

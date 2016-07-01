@@ -1,5 +1,5 @@
 import { asteroid } from '../asteroid/asteroid';
-import { addTodo, getAllTodo, removeTodo, editTodo, addActor, removeActor, getAllActor } from './actions';
+import { addTodo, getAllTodo, removeTodo, editTodo, addActor, moveActor, removeActor, getAllActor } from './actions';
 
 //possibly better in the future to have a "velocity" on the server, and send "ismoving" / "stopmoving" / "update direction" messages
 
@@ -18,13 +18,19 @@ export function callRemoveActor(_id) {
       .then(() => dispatch(removeActor(_id)));
 }
 export function callEditActor(_id, data) {
+	console.log("EDIT ACTOR");
+	console.log(data);
   return dispatch => asteroid.call('editActor', _id, data)
-      .then(() => dispatch(editTodo(_id, data)));
+      .then(() => dispatch(editActor(_id, data)));
 }
 
-export function callMoveActor(_id) {
-  return dispatch => asteroid.call('MoveActor', _id, distanceX, distanceY)
-      .then(() => dispatch(MoveActor(_id, distanceX, distanceY)));
+export function callMoveActor(_id, distanceX, distanceY) {
+	console.log("MOVING async");
+	console.log(distanceX);
+	console.log(distanceY);
+	console.log(_id)
+  return dispatch => asteroid.call('moveActor', _id, distanceX, distanceY)
+      .then(() => dispatch(moveActor(_id, distanceX, distanceY)));
 }
 
 export function callAddTodo(message) {

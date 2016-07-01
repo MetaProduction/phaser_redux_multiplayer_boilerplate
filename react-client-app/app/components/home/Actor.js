@@ -1,20 +1,47 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { callRemoveActor, callEditActor, callAddActor } from '../../redux/async-actions';
+import { callRemoveActor, callEditActor, callMoveActor, callAddActor } from '../../redux/async-actions';
 import cssModules from 'react-css-modules';
 import style from './styles.styl';
 
 const Actor = (props) => {
-  const { id, name, health, posX, posY, dispatchCallRemoveActor} = props;
+  const { id, name, health, posX, posY, speed, dispatchCallRemoveActor, dispatchCallMoveActor} = props;
   const handleRemove = () => {
     dispatchCallRemoveActor(id);
+  };
+  const moveRight = () => {
+    dispatchCallMoveActor(id, speed, 0);
+  };
+  const moveLeft = () => {
+    dispatchCallMoveActor(id, -speed, 0);
+  };
+  const moveUp = () => {
+    console.log("Moving up");
+    console.log(speed);
+    console.log(id);
+    dispatchCallMoveActor(id, 0, speed);
+  };
+  const moveDown = () => {
+    dispatchCallMoveActor(id, 0, -speed);
   };
  //TODO NEXT: add buttons to move
   return (
     <div>
-      name:{name} health: {health} x: {posX} y: {posY}
+      name:{name} health: {health} x: {posX} y: {posY} speed: {speed}
       <button type="button" onClick={handleRemove}>
         <i className="fa fa-times"></i>
+      </button>
+       <button type="button" onClick={moveDown}>
+        <i className="fa fa-times">down</i>
+      </button>
+       <button type="button" onClick={moveLeft}>
+        <i className="fa fa-times">left</i>
+      </button>
+       <button type="button" onClick={moveUp}>
+        <i className="fa fa-times">up</i>
+      </button>
+       <button type="button" onClick={moveRight}>
+        <i className="fa fa-times">right</i>
       </button>
     </div>
   );
@@ -26,12 +53,15 @@ Actor.propTypes = {
   health: React.PropTypes.number,
   posX: React.PropTypes.number,
   posY: React.PropTypes.number,
+  speed: React.PropTypes.number,
   dispatchCallRemoveActor: React.PropTypes.func.isRequired,
+  dispatchCallMoveActor: React.PropTypes.func,
 };
 
 const mapStateToProps = () => ({});
 const mapDispatchToProps = (dispatch) => ({
   dispatchCallRemoveActor: _id => dispatch(callRemoveActor(_id)),
+  dispatchCallMoveActor: (_id, distanceX, distanceY) => dispatch(callMoveActor(_id, distanceX, distanceY))
 });
 
 export default connect(
