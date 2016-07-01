@@ -41,7 +41,13 @@ export function getAllActor(data) {
     data,
   };
 }
-
+export function editActor(_id, data) {
+  return {
+    type: EDIT_ACTOR,
+    _id,
+    data,
+  };
+}
 export function addTodo(data) {
   return {
     type: ADD_TODO,

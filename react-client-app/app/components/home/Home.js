@@ -14,6 +14,7 @@ const Home = (props) => {
       e.preventDefault();
       dispatchCallAddActor(elem.value);
       elem.value = '';
+      //Is there a better/faster/more idomatic way to update the list once a change is made?
       dispatchCallUpdateActors();
     }
   };

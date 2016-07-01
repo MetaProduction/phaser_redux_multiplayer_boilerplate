@@ -1,5 +1,5 @@
 import { createClass } from 'asteroid';
-import { addTodo, removeTodo, editTodo, addActor, removeActor } from '../redux/actions';
+import { addTodo, removeTodo, editTodo, editActor, addActor, removeActor } from '../redux/actions';
 import store from '../redux/store';
 
 const Asteroid = createClass();
@@ -15,6 +15,10 @@ asteroid.subscribe('actor');
 
 asteroid.ddp.on('added', (doc) => {
 	const docObj = Object.assign({}, doc.fields, {_id: doc.id});
+	console.log("Added:");
+	console.log(doc);
+	console.log(doc.id);
+	console.log(doc.fields);
 	store.dispatch(addActor(docObj));
 });
 
@@ -22,8 +26,12 @@ asteroid.ddp.on('removed', (doc) => {
 	const docObj = Object.assign({}, doc.fields, {_id: doc.id});
 	store.dispatch(removeActor(docObj));
 });
-asteroid.ddp.on('changed', (updatedDoc) => {
-  store.dispatch(editTodo(updatedDoc.id, updatedDoc.fields));
+asteroid.ddp.on('changed', ({collection, id, fields}) => {
+	console.log("Changed:");
+	console.log(collection);
+	console.log(id);
+	console.log(fields);
+  store.dispatch(editActor(updatedDoc.id, updatedDoc.fields));
 })
 /**
 asteroid.ddp.on('added', (doc) => {

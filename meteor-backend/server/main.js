@@ -31,8 +31,8 @@ Meteor.publish('todo', function () {
 Meteor.publish('world', function() {
     return World.find();
 })
-Meteor.publish('player', function() {
-    return Player.find();
+Meteor.publish('actor', function() {
+    return Actor.find();
 })
 // We can also use server side methods and call them from our client app
 // here we just fetch all documents from the collection

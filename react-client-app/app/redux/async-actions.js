@@ -17,6 +17,10 @@ export function callRemoveActor(_id) {
   return dispatch => asteroid.call('removeActor', _id)
       .then(() => dispatch(removeActor(_id)));
 }
+export function callEditActor(_id, data) {
+  return dispatch => asteroid.call('editActor', _id, data)
+      .then(() => dispatch(editTodo(_id, data)));
+}
 
 export function callMoveActor(_id) {
   return dispatch => asteroid.call('MoveActor', _id, distanceX, distanceY)
