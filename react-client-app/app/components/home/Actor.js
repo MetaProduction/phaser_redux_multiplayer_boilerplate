@@ -5,7 +5,7 @@ import cssModules from 'react-css-modules';
 import style from './styles.styl';
 
 const Actor = (props) => {
-  const { id, name, health, dispatchCallRemoveActor} = props;
+  const { id, name, health, posX, posY, dispatchCallRemoveActor} = props;
   const handleRemove = () => {
     dispatchCallRemoveActor(id);
   };
@@ -24,6 +24,8 @@ Actor.propTypes = {
   name: React.PropTypes.string.isRequired,
   id: React.PropTypes.string.isRequired,
   health: React.PropTypes.number,
+  posX: React.PropTypes.number,
+  posY: React.PropTypes.number,
   dispatchCallRemoveActor: React.PropTypes.func.isRequired,
 };
 
