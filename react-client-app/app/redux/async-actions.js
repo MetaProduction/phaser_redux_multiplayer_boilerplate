@@ -1,5 +1,20 @@
 import { asteroid } from '../asteroid/asteroid';
-import { addTodo, getAllTodo, removeTodo, editTodo } from './actions';
+import { addTodo, getAllTodo, removeTodo, editTodo, addActor, removeActor, getAllActor } from './actions';
+
+export function callAddActor(name) {
+  return dispatch => asteroid.call('addActor', name)
+      .then(result => dispatch(addActor({ _id: result, name })));
+}
+
+export function callGetAllActor() {
+  return dispatch => asteroid.call('getActors')
+      .then((result) => dispatch(getAllActor(result)));
+}
+
+export function callRemoveActor(_id) {
+  return dispatch => asteroid.call('removeActor', _id)
+      .then(() => dispatch(removeActor(_id)));
+}
 
 export function callAddTodo(message) {
   return dispatch => asteroid.call('addTodo', message)

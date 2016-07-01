@@ -1,5 +1,5 @@
 import { createClass } from 'asteroid';
-import { addTodo, removeTodo, editTodo } from '../redux/actions';
+import { addTodo, removeTodo, editTodo, addActor, removeActor } from '../redux/actions';
 import store from '../redux/store';
 
 const Asteroid = createClass();
@@ -10,8 +10,19 @@ export const asteroid = new Asteroid({
 
 // if you want realitme updates in all connected clients
 // subscribe to the publication
-asteroid.subscribe('todo');
+//asteroid.subscribe('todo');
+asteroid.subscribe('actor');
 
+asteroid.ddp.on('added', (doc) => {
+	const docObj = Object.assign({}, doc.fields, {_id: doc.id});
+	store.dispatch(addActor(docObj));
+});
+
+asteroid.ddp.on('removed', (doc) => {
+	const docObj = Object.assign({}, doc.fields, {_id: doc.id});
+	store.dispatch(removeActor(docObj));
+});
+/**
 asteroid.ddp.on('added', (doc) => {
   // we need proper document object format here
   const docObj = Object.assign({}, doc.fields, { _id: doc.id });
@@ -24,4 +35,4 @@ asteroid.ddp.on('removed', (removedDoc) => {
 
 asteroid.ddp.on('changed', (updatedDoc) => {
   store.dispatch(editTodo(updatedDoc.id, updatedDoc.fields.finished));
-});
+});**/

@@ -1,4 +1,4 @@
-import { ADD_TODO, REMOVE_TODO, EDIT_TODO, GET_ALL_TODO } from './actions';
+import { ADD_TODO, REMOVE_TODO, EDIT_TODO, GET_ALL_TODO, ADD_ACTOR, REMOVE_ACTOR, GET_ALL_ACTOR } from './actions';
 import { combineReducers } from 'redux';
 
 // actions helpers
@@ -49,8 +49,21 @@ function todos(state = [], action) {
   }
 }
 
+function actors(state = [], action) {
+  switch (action.type) {
+    case ADD_ACTOR:
+      return add(state, action);
+    case REMOVE_ACTOR:
+      return remove(state, action);
+    case GET_ALL_ACTOR:
+      return action.data;
+    default:
+      return state;
+  }
+}
+
 const mainReducer = combineReducers({
-  todos,
+  todos, actors,
 });
 
 export default mainReducer;

@@ -2,7 +2,23 @@
 //
 // Read more: http://guide.meteor.com/collections.html
 const Todo = new Meteor.Collection('todo');
+//game holds the whole gameworld, divided into cells. Each cell has a "type", "texture", and "contents".
+const Game = new Meteor.Collection('game');
+//Holds info for all "Actors" (players, monsters, and NPCs)
+const Actor = new Meteor.Collection('actor');
 
+Actor.schema = new SimpleSchema({
+    name: {type: String},
+    type: {type: String},
+    owner: {type: Number, defaultValue: -1}, //negative owner value indicates an NPC
+    posX: {type: Number, defaultValue: 0},
+    posY: {type: Number, defaultValue: 0},
+    health:{type: Number, defaultValue: 100},
+    skills: {type: [Object], defaultValue: []},
+    inventory: {type: [Object], defaultValue: []},
+});
+
+Actor.attachSchema(Actor.schema);
 // We can publish some data (here all)
 // we will be able to subscribe to the data later in the client app
 // remember that this is not secured, all can subscribe to all data from the client side, just demo purposes
@@ -12,6 +28,12 @@ Meteor.publish('todo', function () {
     return Todo.find();
 });
 
+Meteor.publish('world', function() {
+    return World.find();
+})
+Meteor.publish('player', function() {
+    return Player.find();
+})
 // We can also use server side methods and call them from our client app
 // here we just fetch all documents from the collection
 // again, remember that this is not secured, all can call it from the client side, just demo purposes
@@ -32,6 +54,24 @@ Meteor.methods({
     },
     editTodo(id, finished) {
         return Todo.update({_id: id}, {$set: {finished: finished}});
+    },
+    getActor(id) {
+        return Actor.findOne(id);
+    },
+    getActors() {
+        return Actor.find().fetch();
+    },
+    addActor(name){
+        return Actor.insert({name: name, health: 100, type: "testActor", posX: 0, posY: 0, })
+    },
+     removeActor(id) {
+        return Actor.remove({_id: id});
+    },
+    movePlayer(id, distanceX, distanceY) {
+        //todo: check that player is owned by current user
+        //todo: ensure that player is not moving faster than their max move speed
+        //possibly take a direction and calculate the speed entirely serverside
+        return Player.update({_id: id}, {inc: {posX: distanceX, posY: distanceY}});
     }
 });
 
@@ -43,3 +83,8 @@ Todo.deny({
   update() { return true; },
   remove() { return true; },
 });
+Actor.deny({
+  insert() { return true; },
+  update() { return true; },
+  remove() { return true; },
+}); 

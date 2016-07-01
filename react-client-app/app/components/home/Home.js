@@ -2,45 +2,49 @@ import React from 'react';
 import cssModules from 'react-css-modules';
 import { connect } from 'react-redux';
 import style from './styles.styl';
-import Todo from './Todo';
+import Actor from './Actor';
 
-import { callAddTodo } from '../../redux/async-actions';
+import { callAddActor, callGetAllActor } from '../../redux/async-actions';
 
 const Home = (props) => {
-  const { todos, dispatchCallAddTodo } = props;
-  const handleAddTodo = (e) => {
+  const { actors, dispatchCallAddActor, dispatchCallUpdateActors } = props;
+  const handleAddActor = (e) => {
     if (e.key === 'Enter') {
       const elem = e.target;
       e.preventDefault();
-      dispatchCallAddTodo(elem.value);
+      dispatchCallAddActor(elem.value);
       elem.value = '';
+      dispatchCallUpdateActors();
     }
   };
+  console.log(actors);
   return (
     <div styleName="todo-wrapper">
       <div>
         <input
           type="text"
           styleName="add-todo-input"
-          placeholder="Add todo item ..."
-          onKeyPress={handleAddTodo}
+          placeholder="Add actor item ..."
+          onKeyPress={handleAddActor}
         />
       </div>
       <div>
-        {todos.map((t, i) => <Todo id={t._id} message={t.message} finished={t.finished} key={i} />)}
+        {actors.map((t, i) => <Actor id={t._id} name={t.name} health={t.health} posX={t.posX} posY={t.posY} key={i} />)}
       </div>
     </div>
   );
 };
 
 Home.propTypes = {
-  todos: React.PropTypes.array.isRequired,
-  dispatchCallAddTodo: React.PropTypes.func.isRequired,
+  actors: React.PropTypes.array.isRequired,
+  dispatchCallAddActor: React.PropTypes.func.isRequired,
+  dispatchCallUpdateActors: React.PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => ({ todos: state.todos });
+const mapStateToProps = (state) => ({ actors: state.actors });
 const mapDispatchToProps = (dispatch) => ({
-  dispatchCallAddTodo: data => dispatch(callAddTodo(data)),
+  dispatchCallAddActor: data => dispatch(callAddActor(data)),
+  dispatchCallUpdateActors: () => dispatch(callGetAllActor()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(cssModules(Home, style));

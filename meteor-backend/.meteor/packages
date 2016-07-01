@@ -9,3 +9,4 @@ mongo                   # The database Meteor supports right now
 
 standard-minifier-js    # JS minifier run for production mode
 ecmascript              # Enable ECMAScript2015+ syntax in app code
+aldeed:collection2
