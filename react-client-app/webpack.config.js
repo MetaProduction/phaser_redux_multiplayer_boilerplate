@@ -47,13 +47,16 @@ module.exports = {
                 test: /\.(png|jpg)$/,
                 exclude: /(node_modules|bower_components)/,
                 loader: 'url-loader?name=images/[name].[ext]&limit=8192'
-            }
+            },
+            { test: /pixi.js/, loader: "script" },
+            { test: /phaser.js/, loader: "script" }
         ]
     },
     resolve: {
         root: path.join(__dirname, '..', 'app'),
         extensions: ['', '.js', '.jsx', '.json', '.css', '.styl', '.png', '.jpg', '.jpeg', '.gif']
     },
+
     stylus: function () {
         return [sGrid, rupture]
     },

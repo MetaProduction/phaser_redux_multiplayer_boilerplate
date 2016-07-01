@@ -4,6 +4,7 @@ import style from './styles.styl';
 import { callGetAllActor } from '../../redux/async-actions';
 import { connect } from 'react-redux';
 
+
 class Main extends React.Component {
   componentDidMount() {
     this.props.dispatch(callGetAllActor());

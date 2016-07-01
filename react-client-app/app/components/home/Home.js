@@ -7,6 +7,7 @@ import Actor from './Actor';
 import { callAddActor, callGetAllActor, callMoveActor} from '../../redux/async-actions';
 
 const Home = (props) => {
+  
   const { actors, dispatchCallAddActor, dispatchCallUpdateActors, dispatchCallMoveActor } = props;
   const handleAddActor = (e) => {
     if (e.key === 'Enter') {
