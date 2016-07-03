@@ -16,7 +16,7 @@ module.exports = {
         pathinfo: true,
         path: path.resolve(__dirname, 'public'),
         filename: 'bundle.js',
-        publicPath: 'http://localhost:3000/'
+        publicPath: 'http://192.168.1.10:3000/'
     },
     plugins: [
         new HtmlWebpackPlugin({

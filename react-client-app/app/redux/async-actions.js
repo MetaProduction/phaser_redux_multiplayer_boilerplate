@@ -1,10 +1,29 @@
 import { asteroid } from '../asteroid/asteroid';
 import { addTodo, getAllTodo, removeTodo, editTodo, addActor, moveActor, removeActor, getAllActor } from './actions';
 
-//possibly better in the future to have a "velocity" on the server, and send "ismoving" / "stopmoving" / "update direction" messages
 
-export function callAddActor(name) {
-  return dispatch => asteroid.call('addActor', name)
+/**
+*** Account Actions
+**/
+export function callRegister(data) {
+	return dispatch => asteroid.createUser(data)
+		.then(result => dispatch(register({data})))
+}
+export function callLogin(data) {
+	return dispatch => asteroid.createUser(data)
+		.then(result => dispatch(register({data})))
+}
+export function callLogout(data) {
+	return dispatch => asteroid.createUser(data)
+		.then(result => dispatch(register({data})))
+}
+
+/**
+*** Actor Actions
+**/
+export function callAddActor(name,password) {
+  return dispatch => asteroid.createUser({username: name, password: password})
+  	  .then(result => asteroid.call('addActor', name, result))
       .then(result => dispatch(addActor({ _id: result, name })));
 }
 
@@ -18,17 +37,16 @@ export function callRemoveActor(_id) {
       .then(() => dispatch(removeActor(_id)));
 }
 export function callEditActor(_id, data) {
-	console.log("EDIT ACTOR");
-	console.log(data);
+
   return dispatch => asteroid.call('editActor', _id, data)
       .then(() => dispatch(editActor(_id, data)));
 }
 
+//possibly better in the future to have a "velocity" on the server, and send "ismoving" / "stopmoving" / "update direction" messages
+//with predicive movement on the client
+
 export function callMoveActor(_id, distanceX, distanceY) {
-	console.log("MOVING async");
-	console.log(distanceX);
-	console.log(distanceY);
-	console.log(_id)
+	
   return dispatch => asteroid.call('moveActor', _id, distanceX, distanceY)
       .then(() => dispatch(moveActor(_id, distanceX, distanceY)));
 }

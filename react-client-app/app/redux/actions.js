@@ -2,6 +2,10 @@
  * action types
  */
 
+export const REGISTER = 'REGISTER';
+export const LOGIN = 'LOGIN';
+export const LOGOUT = 'LOGOUT';
+
 export const ADD_TODO = 'ADD_TODO';
 export const REMOVE_TODO = 'REMOVE_TODO';
 export const EDIT_TODO = 'EDIT_TODO';
@@ -12,10 +16,32 @@ export const EDIT_ACTOR = 'EDIT_ACTOR';
 export const REMOVE_ACTOR = 'REMOVE_ACTOR';
 export const GET_ALL_ACTOR = 'GET_ALL_ACTOR';
 export const MOVE_ACTOR = 'MOVE_ACTOR';
-/*
- * action creators
- */
 
+/*
+ * Account actions
+ */
+export function register(data) {
+  return {
+      type: REGISTER,
+      data,
+  };
+}
+export function login(data) {
+  return {
+    type: LOGIN,
+    data,
+  };
+}
+export function logout(data) {
+  return {
+    type: LOGOUT,
+    data,
+  };
+}
+
+/*
+ * Actor actions
+ */
 export function addActor(data) {
   return {
     type: ADD_ACTOR,
@@ -49,6 +75,11 @@ export function editActor(_id, data) {
     data,
   };
 }
+
+/*
+ * Todo Actions (deprecated, remove)
+ */
+
 export function addTodo(data) {
   return {
     type: ADD_TODO,

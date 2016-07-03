@@ -16,17 +16,32 @@ const Actor = (props) => {
     dispatchCallMoveActor(id, -speed, 0);
   };
   const moveUp = () => {
-    console.log("Moving up");
-    console.log(speed);
-    console.log(id);
-    dispatchCallMoveActor(id, 0, speed);
+    
+    dispatchCallMoveActor(id, 0, -speed);
   };
   const moveDown = () => {
-    dispatchCallMoveActor(id, 0, -speed);
+    dispatchCallMoveActor(id, 0, speed);
+  };
+  const handleKeyPress = (e) => {
+   
+    switch(e.key) {
+      case "s":
+        moveDown();
+        break;
+      case "w":
+        moveUp();
+        break;
+      case "a":
+        moveLeft();
+        break;
+      case "d":
+        moveRight();
+        break;
+    }
   };
  //TODO NEXT: add buttons to move
   return (
-    <div>
+    <div onKeyDown={handleKeyPress}>
       name:{name} health: {health} x: {posX} y: {posY} speed: {speed}
       <button type="button" onClick={handleRemove}>
         <i className="fa fa-times"></i>

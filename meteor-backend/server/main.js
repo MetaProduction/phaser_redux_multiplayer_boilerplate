@@ -10,7 +10,7 @@ const Actor = new Meteor.Collection('actor');
 Actor.schema = new SimpleSchema({
     name: {type: String},
     type: {type: String},
-    owner: {type: Number, defaultValue: -1}, //negative owner value indicates an NPC
+    owner: {type: String, defaultValue: '-1'}, //negative owner value indicates an NPC
     posX: {type: Number, defaultValue: 0},
     posY: {type: Number, defaultValue: 0},
     health:{type: Number, defaultValue: 100},
@@ -62,15 +62,14 @@ Meteor.methods({
     getActors() {
         return Actor.find().fetch();
     },
-    addActor(name){
-        return Actor.insert({name: name, health: 100, speed:10, type: "testActor", posX: 0, posY: 0, })
+    addActor(name, owner){
+        return Actor.insert({name: name, owner: owner, health: 100, speed:10, type: "testActor", posX: 0, posY: 0, })
     },
      removeActor(id) {
         return Actor.remove({_id: id});
     },
     moveActor(id, distanceX, distanceY) {
-        console.log('moving');
-        console.log(id);
+        
         //todo: check that player is owned by current user
         //todo: ensure that player is not moving faster than their max move speed
         //possibly take a direction and calculate the speed entirely serverside
