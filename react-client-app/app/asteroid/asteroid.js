@@ -5,7 +5,7 @@ import store from '../redux/store';
 const Asteroid = createClass();
 // Connect to a Meteor backend
 export const asteroid = new Asteroid({
-  endpoint: 'ws://192.168.1.10:9000/websocket',
+  endpoint: 'ws://localhost:9000/websocket',
 });
 
 // if you want realitme updates in all connected clients
