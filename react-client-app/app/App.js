@@ -7,21 +7,30 @@ import store from './redux/store';
 require('../vendor/phaser/phaser.js');
 import PIXI from '../vendor/phaser/pixi.js';
  
+   /**
+  *** Create phaser game window
+  **/ 
  var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser-example', { create: create, update: update });
- 	  var t;
+
+ 	  //declare game variables to be accessible throughout the scope
+ 	  //todo: scope entire game better
+ 	  var loadingText;
  	  var actors = {};
  	  var gameStore;
  	  
  	  store.subscribe(() => {
- 	  	gameStore = store.getState();
+ 	  	// All game state comes from the redux store we just subscribed to.
+ 	  	gameStore = store.getState(); // Whenever the store changes we recieve the whole state, store the new state in gameStore
  	  });
       function create() {
-          gameStore = store.getState();
-          game.time.desiredFps = 30;
-          var text = "- phaser -\n with a sprinkle of \n pixi dust."
+          gameStore = store.getState(); 
+          game.time.desiredFps = 30; // this \seems\ like it improves performance a little bit. Test more.
+
+
+          //default text style
           var style = { font: "65px Arial", fill: "#ff0044", align: "center" };
 
-          t = game.add.text(game.world.centerX-300, 0, text, style);
+          loadingText = game.add.text(game.world.centerX-300, 0, "Loading...", style);
   		}
   		function update() {
 			
@@ -36,7 +45,7 @@ import PIXI from '../vendor/phaser/pixi.js';
 			 			actors[actor.name].y = game.world.centerY+actor.posY;
 			 		}
 			 	}
-			 t.destroy();
+			 loadingText.destroy();
 			 }
 			 
   		}
