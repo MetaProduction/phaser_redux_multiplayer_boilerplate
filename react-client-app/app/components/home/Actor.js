@@ -10,6 +10,8 @@ const Actor = (props) => {
     dispatchCallRemoveActor(id);
   };
   const moveRight = () => {
+    console.log("ID:");
+    console.log(id);
     dispatchCallMoveActor(id, speed, 0);
   };
   const moveLeft = () => {
@@ -39,7 +41,7 @@ const Actor = (props) => {
         break;
     }
   };
- //TODO NEXT: add buttons to move
+ //TODO NEXT: Update keypress actions to send "startmoving" and "endmoving" messages, with all actual movment handled serverside.
   return (
     <div onKeyDown={handleKeyPress}>
       name:{name} health: {health} x: {posX} y: {posY} speed: {speed}

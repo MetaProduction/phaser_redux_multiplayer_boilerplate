@@ -25,13 +25,13 @@ const Home = (props) => {
 
 
   return (
-    <div styleName="todo-wrapper">
+    <div styleName="game-wrapper">
       <div>
         <form onKeyPress={handleAddActor}>
           <input
             type="text"
             name="name"
-            styleName="add-todo-input"
+            styleName="add-game-input"
             placeholder="name"          
           />
 

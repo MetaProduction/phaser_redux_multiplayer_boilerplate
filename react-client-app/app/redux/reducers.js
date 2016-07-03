@@ -1,4 +1,4 @@
-import { ADD_TODO, REMOVE_TODO, EDIT_TODO, EDIT_ACTOR, GET_ALL_TODO, ADD_ACTOR, REMOVE_ACTOR, MOVE_ACTOR, GET_ALL_ACTOR, LOGIN, LOGOUT, REGISTER } from './actions';
+import {ADD_ACTOR, EDIT_ACTOR, REMOVE_ACTOR, MOVE_ACTOR, GET_ALL_ACTOR, LOGIN, LOGOUT, REGISTER } from './actions';
 import { combineReducers } from 'redux';
 
 // actions helpers
@@ -63,20 +63,6 @@ const logout = (state, action) => {
   return newState;
 }
 
-function todos(state = [], action) {
-  switch (action.type) {
-    case ADD_TODO:
-      return add(state, action);
-    case REMOVE_TODO:
-      return remove(state, action);
-    case EDIT_TODO:
-      return edit(state, action);
-    case GET_ALL_TODO:
-      return action.data;
-    default:
-      return state;
-  }
-}
 function account(state = [], action) {
   switch (action.type) {
     case REGISTER:
@@ -107,7 +93,7 @@ function actors(state = [], action) {
 }
 
 const mainReducer = combineReducers({
-  todos, actors,
+  actors,
 });
 
 export default mainReducer;
