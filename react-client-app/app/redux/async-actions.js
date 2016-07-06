@@ -1,5 +1,5 @@
 import { asteroid } from '../asteroid/asteroid';
-import { addActor, moveActor, removeActor, getAllActor } from './actions';
+import { addActor, moveActor, removeActor, getAllActor, stopActor} from './actions';
 
 
 /**
@@ -22,8 +22,7 @@ export function callLogout(data) {
 *** Actor Actions
 **/
 export function callAddActor(name,password) {
-  return dispatch => asteroid.createUser({username: name, password: password})
-  	  .then(result => asteroid.call('addActor', name, result))
+  return dispatch => asteroid.call('addActor', name)
       .then(result => dispatch(addActor({ _id: result, name })));
 }
 
@@ -45,9 +44,15 @@ export function callEditActor(_id, data) {
 //possibly better in the future to have a "velocity" on the server, and send "ismoving" / "stopmoving" / "update direction" messages
 //with predicive movement on the client
 
-export function callMoveActor(_id, distanceX, distanceY) {
+export function callMoveActor(_id, directionX, directionY) {
 	
-  return dispatch => asteroid.call('moveActor', _id, distanceX, distanceY)
-      .then(() => dispatch(moveActor(_id, distanceX, distanceY)));
+  return dispatch => asteroid.call('addActorVelocity', _id, directionX, directionY)
+      .then(() => dispatch(moveActor(_id, directionX, directionY)));
 }
+export function callStopActor(_id, shouldStopX, shouldStopY) {
+  
+  return dispatch => asteroid.call('stopActor', _id, shouldStopX, shouldStopY)
+      .then(() => dispatch(stopActor(_id, shouldStopX, shouldStopY)));
+}
+
 

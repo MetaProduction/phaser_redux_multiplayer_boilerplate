@@ -1,28 +1,31 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { callRemoveActor, callEditActor, callMoveActor, callAddActor } from '../../redux/async-actions';
+import { callRemoveActor, callEditActor, callMoveActor, callStopActor, callAddActor } from '../../redux/async-actions';
 import cssModules from 'react-css-modules';
 import style from './styles.styl';
 
 const Actor = (props) => {
-  const { id, name, health, posX, posY, speed, dispatchCallRemoveActor, dispatchCallMoveActor} = props;
+  const { id, name, health, posX, posY, speed, dispatchCallRemoveActor, dispatchCallMoveActor, dispatchCallStopActor} = props;
   const handleRemove = () => {
     dispatchCallRemoveActor(id);
   };
+  const stopX = () => {
+    dispatchCallStopActor(id, true, false);
+  };
+  const stopY = () => {
+    dispatchCallStopActor(id, false, true);
+  }
   const moveRight = () => {
-    console.log("ID:");
-    console.log(id);
-    dispatchCallMoveActor(id, speed, 0);
+    dispatchCallMoveActor(id, 1, 0);
   };
   const moveLeft = () => {
-    dispatchCallMoveActor(id, -speed, 0);
+    dispatchCallMoveActor(id, -1, 0);
   };
   const moveUp = () => {
-    
-    dispatchCallMoveActor(id, 0, -speed);
+    dispatchCallMoveActor(id, 0, -1);
   };
   const moveDown = () => {
-    dispatchCallMoveActor(id, 0, speed);
+    dispatchCallMoveActor(id, 0, 1);
   };
   const handleKeyPress = (e) => {
    
@@ -44,16 +47,16 @@ const Actor = (props) => {
   const handleKeyRelease = (e) => {
     switch(e.key) {
       case "s":
-        moveDown();
+        stopY();
         break;
       case "w":
-        moveUp();
+        stopY();
         break;
       case "a":
-        moveLeft();
+        stopX();
         break;
       case "d":
-        moveRight();
+        stopX();
         break;
     }
   }
@@ -64,16 +67,16 @@ const Actor = (props) => {
       <button type="button" onClick={handleRemove}>
         <i className="fa fa-times"></i>
       </button>
-       <button type="button" onClick={moveDown}>
+       <button type="button" onMouseDown={moveDown} onMouseUp={stopY}>
         <i className="fa fa-times">down</i>
       </button>
-       <button type="button" onClick={moveLeft}>
+       <button type="button" onMouseDown={moveLeft} onMouseUp={stopX}>
         <i className="fa fa-times">left</i>
       </button>
-       <button type="button" onClick={moveUp}>
+       <button type="button" onMouseDown={moveUp} onMouseUp={stopY}>
         <i className="fa fa-times">up</i>
       </button>
-       <button type="button" onClick={moveRight}>
+       <button type="button" onMouseDown={moveRight} onMouseUp={stopX}>
         <i className="fa fa-times">right</i>
       </button>
     </div>
@@ -89,12 +92,14 @@ Actor.propTypes = {
   speed: React.PropTypes.number,
   dispatchCallRemoveActor: React.PropTypes.func.isRequired,
   dispatchCallMoveActor: React.PropTypes.func,
+  dispatchCallStopActor: React.PropTypes.func,
 };
 
 const mapStateToProps = () => ({});
 const mapDispatchToProps = (dispatch) => ({
   dispatchCallRemoveActor: _id => dispatch(callRemoveActor(_id)),
-  dispatchCallMoveActor: (_id, distanceX, distanceY) => dispatch(callMoveActor(_id, distanceX, distanceY))
+  dispatchCallMoveActor: (_id, directionX, directionY) => dispatch(callMoveActor(_id, directionX, directionY)),
+  dispatchCallStopActor: (_id, shouldStopX, shouldStopY) => dispatch(callStopActor(_id, shouldStopX, shouldStopY))
 });
 
 export default connect(

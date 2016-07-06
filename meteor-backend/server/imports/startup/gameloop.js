@@ -19,8 +19,7 @@ module.exports.setGameLoop = function(update, tickLengthMs) {
 	 * Length of a tick in milliseconds. The denominator is your desired framerate.
 	 * e.g. 1000 / 20 = 20 fps, 1000 / 60 = 60 fps
 	 */
-	tickLengthMs = tickLengthMs || 1000 / 30;
-
+	tickLengthMs = tickLengthMs || 1000 / 20;
 	/* gameLoop related variables */
 	// timestamp of each loop
 	var previousTick = Date.now();

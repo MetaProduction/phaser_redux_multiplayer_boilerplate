@@ -1,4 +1,4 @@
-import {ADD_ACTOR, EDIT_ACTOR, REMOVE_ACTOR, MOVE_ACTOR, GET_ALL_ACTOR, LOGIN, LOGOUT, REGISTER } from './actions';
+import {ADD_ACTOR, EDIT_ACTOR, REMOVE_ACTOR, MOVE_ACTOR, STOP_ACTOR,GET_ALL_ACTOR, LOGIN, LOGOUT, REGISTER } from './actions';
 import { combineReducers } from 'redux';
 
 // actions helpers
@@ -39,13 +39,27 @@ const move = (state, action) => {
   if (Array.isArray(elemToEditArray) && elemToEditArray.length) {
     const elemToEditIndex = state.indexOf(elemToEditArray[0]);
     const newState = state.slice();
-    newState[elemToEditIndex].posX = newState[elemToEditIndex].posX + action.distanceX;
-    newState[elemToEditIndex].posY = newState[elemToEditIndex].posY + action.distanceY;
+    newState[elemToEditIndex].posX = newState[elemToEditIndex].posX + action.directionX;
+    newState[elemToEditIndex].posY = newState[elemToEditIndex].posY + action.directionY;
     return newState;
   }
   return state;
 }
-
+const stop = (state, action) => {
+  const elemToEditArray = state.slice().filter(item => item._id === action._id);
+  if (Array.isArray(elemToEditArray) && elemToEditArray.length) {
+    const elemToEditIndex = state.indexOf(elemToEditArray[0]);
+    const newState = state.slice();
+    if (action.shouldStopX === true) {
+      newState[elemToEditIndex].velX = 0;
+    }
+    if (action.shouldStopY === true) {
+      newState[elemToEditIndex].velY = 0;
+    }
+    return newState;
+  }
+  return state;
+}
 const register = (state, action) => {
   //do nothing, we only update the state once logged in
   return state;
@@ -85,6 +99,8 @@ function actors(state = [], action) {
       return action.data;
     case MOVE_ACTOR:
       return move(state, action);
+    case STOP_ACTOR:
+      return stop(state, action);
     case EDIT_ACTOR:
       return edit(state, action);
     default:

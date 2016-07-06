@@ -9,7 +9,7 @@ const Game = new Meteor.Collection('game');
 //Holds info for all "Actors" (players, monsters, and NPCs)
 const Actor = new Meteor.Collection('actor');
 //holds all pending actions for the next tick in the game loop
-let Actions = [];
+let actions = {};
 Actor.schema = new SimpleSchema({
     name: {type: String},
     type: {type: String},
@@ -79,7 +79,7 @@ Meteor.methods({
         return
     },
     addActorVelocity(id, directionX, directionY) {
-        
+        var actor = Actor.findOne({_id: id});
         //todo: check that player is owned by current user
         //todo: ensure that player is not moving faster than their max move speed
         //possibly take a direction and calculate the speed entirely serverside
@@ -97,16 +97,49 @@ Meteor.methods({
             }
             return direction;
         }
+
         directionX = checkDirection(directionX);
         directionY = checkDirection(directionY);
        
+        let newVelX = (actor.speed * directionX);
+        let newVelY = (actor.speed * directionY);
+
+        let checkMaxSpeed = function (velocity) {
+            if (velocity > actor.speed) {
+                velocity = 0;
+            }
+            if (velocity < -actor.speed) {
+                velocity = 0;
+            }
+            return velocity;
+        }
+
+        newVelX = checkMaxSpeed(newVelX);
+        newVelY = checkMaxSpeed(newVelY)
                
           
-        var actor = Actor.findOne({_id: id});
-        return Actor.update({_id: id}, {$inc: {velX: actor.speed * directionX , velY: actor.speed * directionY}});
+        
+        actions[id] = {_id: id, velX: newVelX, velY: newVelY};
+        return actions[id];
+        //return Actor.update({_id: id}, {$set: {velX: newVelX , velY: newVelY}});
     },
-    stopMovingActor(id) {
-        return Actor.update({_id: id}, {$set: {velX: 0, velY: 0}});
+    stopActor(id, shouldStopX, shouldStopY) {
+
+        if (shouldStopX === true && shouldStopY === true) {
+            actions[id] = Object.assign({}, actions[id], {_id: id, velX: 0, velY: 0})
+            return actions[id];                
+        }
+        else if (shouldStopY === true) {
+            actions[id] = Object.assign({}, actions[id], {_id: id, velY: 0})
+            return actions[id]; 
+        }
+        else if (shouldStopX === true) {
+            actions[id] = Object.assign({}, actions[id], {_id: id, velX: 0})
+            return actions[id]; 
+        }
+
+
+        
     }
 });
 
@@ -116,30 +149,41 @@ import {setGameLoop, clearGameLoop} from './imports/startup/gameloop.js';
 let frameCount = 0
 
 let gameLoop = setGameLoop(Meteor.bindEnvironment(function(delta){
+    //get raw collection so we can call mongo operations like bulk directly
     actorCollection = Actor.rawCollection();
+    //an Unordered Bulk Op will complete all operations even if one fails
     let bulk = actorCollection.initializeUnorderedBulkOp();
-    let actors = Actor.find();
-    actors.forEach(function(actor) {
-        console.log("On actor:");
-        console.log(actor);
-        newX = actor.posX + actor.velX;
-        newY = actor.posY + actor.velY;
-        bulk.find({_id: actor._id}).update({posX: newX, posY: newY});
-    });
-    let result = Meteor.wrapAsync(bulk.execute)();
-    console.log(result);
-    console.log('Hi there! (frame=%s, delta=%s)', frameCount++, delta);
-    //update each actor according to it's current velocity
-    //is it possible to do it all in one operation so we can return the updated state all at once?
-    //one approach here: https://stackoverflow.com/questions/19223085/meteor-server-side-bulk-database-changes
-    // mongodb bulk looks like a better approachhttps://docs.mongodb.com/v3.0/reference/method/Bulk.find.update/#Bulk.find.update
-}), 60);
 
-// stop the loop 2 seconds later
-Meteor.setTimeout(Meteor.bindEnvironment(function() {
-    console.log('2000ms passed, stopping the game loop');
-    clearGameLoop(gameLoop);
-}), 2000);
+    //iterate over the actors to update their positions based on velocity
+    let actors = Actor.find();
+    let actorsHaveBeenMoved = false;
+    actors.forEach(function(actor) {
+        if (actions[actor._id]) {
+            let action = actions[actor._id];
+            let newX = actor.posX + action.velX;
+            let newY = actor.posY + action.velY;
+
+            bulk.find({_id: actor._id}).update({$set: {posX: newX, posY: newY}});
+        
+        
+            
+
+            actorsHaveBeenMoved = true;
+        }
+       
+    });
+
+    //use wrapAsync to make sure meteor knows what to do when this returns
+    if (actorsHaveBeenMoved) {
+         let result = Meteor.wrapAsync(bulk.execute)();
+         //TODO: handle the errors better
+        //console.log(result.toJSON());
+    }
+   
+    //console.log('Hi there! (frame=%s, delta=%s)', frameCount++, delta);
+    }), 20);
+
+
 
 // Deny all client-side updates on the Lists collection
 // Read more about security stuff: http://guide.meteor.com/security.html

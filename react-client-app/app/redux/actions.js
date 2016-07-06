@@ -11,6 +11,7 @@ export const EDIT_ACTOR = 'EDIT_ACTOR';
 export const REMOVE_ACTOR = 'REMOVE_ACTOR';
 export const GET_ALL_ACTOR = 'GET_ALL_ACTOR';
 export const MOVE_ACTOR = 'MOVE_ACTOR';
+export const STOP_ACTOR = 'STOP_ACTOR';
 
 /*
  * Account actions
@@ -47,8 +48,16 @@ export function moveActor(data) {
   return {
     type: MOVE_ACTOR,
     _id,
-    distanceX,
-    distanceY,
+    directionX,
+    directionY,
+  };
+}
+export function stopActor(data) {
+  return {
+    type: STOP_ACTOR,
+    _id,
+    shouldStopX,
+    shouldStopY,
   };
 }
 export function removeActor(_id) {

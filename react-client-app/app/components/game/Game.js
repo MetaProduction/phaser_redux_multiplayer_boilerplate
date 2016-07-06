@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import style from './styles.styl';
 import Actor from './Actor';
 
-import { callAddActor, callGetAllActor, callMoveActor} from '../../redux/async-actions';
+import { callAddActor, callGetAllActor, callMoveActor, callStopActor} from '../../redux/async-actions';
 
 
 const Game = (props) => {
@@ -60,7 +60,7 @@ const mapStateToProps = (state) => ({ actors: state.actors });
 const mapDispatchToProps = (dispatch) => ({
   dispatchCallAddActor: (name, password) => dispatch(callAddActor(name, password)),
   dispatchCallUpdateActors: () => dispatch(callGetAllActor()),
-  dispatchCallMoveActor: (_id, distanceX, distanceY) => dispatch(callMoveActor(_id, distanceX, distanceY)),
+  dispatchCallMoveActor: (_id, directionX, directionY) => dispatch(callMoveActor(_id, directionX, directionY)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(cssModules(Game, style));
