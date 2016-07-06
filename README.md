@@ -1,6 +1,14 @@
-## Demo: React, Webpack, Redux and Meteor as a backend only
+## Demo - Phaser / React / Redux / Meteor multiplayer browser game boilerplate
 
-You can read article about it: 
+This is in it's infancy, with the end goal being a sort of multiplayer server in a box to rapidly prototype 2d multiplayer games. 
+
+At this point the main goal is to determine exactly what sort of game this setup can support. A hypothetical "golden" use-case being a 2d MMO with thousands of users taking action in real-time. A more realistic use case might be a turn based tick-based game with limited numbers of players using a server instance at a time. 
+
+This project is based on this excellent boilerplate: https://github.com/juliancwirko/react-redux-webpack-meteor
+
+The original documentation is below for getting started until I write my own. 
+
+
 - [React with Webpack + Meteor as a backend](http://julian.io/react-with-webpack-meteor-as-a-backend/)
 
 This is just a standard React - Redux app based on [my boilerplate](https://github.com/juliancwirko/react-boilerplate). It uses Meteor, but only as a backend. So you need to run both apps.
