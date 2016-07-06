@@ -2,7 +2,7 @@
 
 This is in it's infancy, with the end goal being a sort of multiplayer server in a box to rapidly prototype 2d multiplayer games. 
 
-At this point the main goal is to determine exactly what sort of game this setup can support. A hypothetical "golden" use-case being a 2d MMO with thousands of users taking action in real-time. A more realistic use case might be a turn based tick-based game with limited numbers of players using a server instance at a time. 
+At this point the main goal is to determine exactly what sort of game this setup can support. A hypothetical "golden" use-case being a 2d MMO with thousands of users taking action in real-time. A more realistic use case might be a turn-based or tick-based game with a dozen or so players using a server instance at a time. 
 
 This project is based on this excellent boilerplate: https://github.com/juliancwirko/react-redux-webpack-meteor
 
